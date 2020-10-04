@@ -7,7 +7,8 @@ class ChatDamageButtons5e extends Application {
 
         Hooks.on('renderChatMessage', (message, html, data) => {            
 
-            if ( !message.isRoll || message.roll.parts[0].faces == 20) return
+            if (!message.isRoll || message.roll.parts[0].faces == 6) return
+            console.log("poop");
             
                 let btnStyling = 'width: 22px; height:22px; font-size:10px;line-height:1px';
 
