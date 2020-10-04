@@ -47,7 +47,7 @@ class ChatDamageButtons5e extends Application {
 
 
                     if (armor.data.armorRating != undefined) {
-                        console.log(armor.data.armorRating);
+                        console.log(parseInt(armor.data.armorRating) + parseInt(_token.data.actorData.data.defense));
                     }
                 });
 
