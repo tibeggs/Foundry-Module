@@ -5,10 +5,10 @@
 	"version": "0.1",
 	"minimumCoreVersion": "0.4.5",
 	"author": "hooking",
-	"scripts": ["./chatdamagebuttonsAGE.js"],
+	"scripts": [ "./chatdamagebuttonsAGE.js" ],
 	"styles": [],
 	"packs": [],
-	"url": "https://gitlab.com/hooking/foundry-vtt---chat-damage-buttons/blob/master/README.md",
-	"manifest": "https://gitlab.com/hooking/foundry-vtt---chat-damage-buttons/blob/master/module.json",
-	"download": "https://gitlab.com/hooking/foundry-vtt---chat-damage-buttons/-/archive/master/foundry-vtt---chat-damage-buttons-master.zip"
+	"url": "https://github.com/tibeggs/Foundry-Module/blob/master/README.md",
+	"manifest": "https://github.com/tibeggs/Foundry-Module/blob/master/module.json",
+	"download": "https://github.com/tibeggs/Foundry-Module/releases/latest/download/Foundry-Module.zip"
 }
