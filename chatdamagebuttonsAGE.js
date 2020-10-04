@@ -6,8 +6,9 @@ class ChatDamageButtons5e extends Application {
     init() {
 
         Hooks.on('renderChatMessage', (message, html, data) => {
-            console.log(message);
-            if (true != false) {
+            console.log(message.data.content);
+            console.log(html);
+            if (message.data.flavor.includes("weapon damage.")) {
                 console.log("poop");
 
 
@@ -36,6 +37,8 @@ class ChatDamageButtons5e extends Application {
                         weight: 0,
                     };
 
+                    const wDamage = parseInt(message.data.content);
+
 
                     const emptyArmor = Object.assign(Object.assign({}, emptyPhysicalItem), { type: "Armor", description: "", armorPenalty: 0, armorRating: 0, equipped: false });
 
@@ -46,9 +49,19 @@ class ChatDamageButtons5e extends Application {
                         .reduce((c, v) => (c.armorRating > v.armorRating ? c : v), emptyArmor);
 
 
-                    if (armor.data.armorRating != undefined) {
-                        console.log(parseInt(armor.data.armorRating) + parseInt(_token.data.actorData.data.defense));
+                    if (armor.data != undefined) {
+                        var tough_arm = parseInt(armor.data.armorRating) + parseInt(_token.actor.data.data.abilities.Constitution);
+                    } else {
+                        var tough_arm = parseInt(_token.actor.data.data.abilities.Constitution);
                     }
+                    console.log(wDamage);
+                    console.log(wDamage - tough_arm);
+
+                    const calc_damage = wDamage - tough_arm;
+
+                    ChatMessage.create({ user: game.user._id, speaker: ChatMessage.getSpeaker({ actor: target }), flavor: "Damage Dealt ", content: "[[" + wDamage + "-" + tough_arm + "]]" })
+
+
                 });
 
             }
