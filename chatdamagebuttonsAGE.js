@@ -6,65 +6,55 @@ class ChatDamageButtons5e extends Application {
     init() {
 
         Hooks.on('renderChatMessage', (message, html, data) => {
-            console.log(message.data.content);
-            console.log(html);
-            if (message.data.flavor.includes("weapon damage.")) {
-                console.log("poop");
+            if ("flavor" in message.data) {
+                if (message.data.flavor.includes("weapon damage.")) {
+
+                    let btnStyling = 'width: 22px; height:22px; font-size:10px;line-height:1px';
+
+                    let fullDamageButton = $(`<button class="dice-total-fullDamage-btn" style="${btnStyling}"><i class="fas fa-user-minus" title="Click to apply calculate damage minus armor."></i></button>`);
+
+                    let btnContainer = $('<span class="dmgBtn-container" style="position:absolute; right:0; bottom:1px;"></span>');
+                    btnContainer.append(fullDamageButton);
+
+                    html.find('.dice-total').append(btnContainer);
+
+                    // Handle button clicks
+                    fullDamageButton.click(ev => {
+                        ev.stopPropagation();
+                        console.log(_token);
+                        if (canvas.tokens.controlled.length == 0 || canvas.tokens.controlled.length > 1) {
+                            ui.notifications.error("Please select a single token");
+                        }
+                        let target = canvas.tokens.controlled[0].actor;
 
 
-                let btnStyling = 'width: 22px; height:22px; font-size:10px;line-height:1px';
-
-                let fullDamageButton = $(`<button class="dice-total-fullDamage-btn" style="${btnStyling}"><i class="fas fa-user-minus" title="Click to apply calculate damage minus armor."></i></button>`);
-
-                let btnContainer = $('<span class="dmgBtn-container" style="position:absolute; right:0; bottom:1px;"></span>');
-                btnContainer.append(fullDamageButton);
-
-                html.find('.dice-total').append(btnContainer);
-
-                // Handle button clicks
-                fullDamageButton.click(ev => {
-                    ev.stopPropagation();
-                    console.log(_token);
-                    if (canvas.tokens.controlled.length == 0 || canvas.tokens.controlled.length > 1) {
-                        ui.notifications.error("Please select a single token");
-                    }
-                    let target = canvas.tokens.controlled[0].actor;
-
-                    const emptyPhysicalItem = {
-                        type: "Armor",
-                        description: "",
-                        quantity: 1,
-                        weight: 0,
-                    };
-
-                    const wDamage = parseInt(message.data.content);
+                        const wDamage = parseInt(message.data.content);
 
 
-                    const emptyArmor = Object.assign(Object.assign({}, emptyPhysicalItem), { type: "Armor", description: "", armorPenalty: 0, armorRating: 0, equipped: false });
+                        const armor = target.data.data.armorRating;
 
-                    const armor = (target.items || [])
-                        .filter((i) => i.data.data.type == "Armor")
-                        .filter((i) => i.data.data.equipped)
-                        .map((i) => i.data)
-                        .reduce((c, v) => (c.armorRating > v.armorRating ? c : v), emptyArmor);
+                        var wTough = parseInt(_token.actor.data.data.toughnes)|| 0;
 
+                        var tough_arm = parseInt(armor) + parseInt(wTough);
 
-                    if (armor.data != undefined) {
-                        var tough_arm = parseInt(armor.data.armorRating) + parseInt(_token.actor.data.data.abilities.Constitution);
-                    } else {
-                        var tough_arm = parseInt(_token.actor.data.data.abilities.Constitution);
-                    }
-                    console.log(wDamage);
-                    console.log(wDamage - tough_arm);
+                        
 
-                    const calc_damage = wDamage - tough_arm;
-
-                    ChatMessage.create({ user: game.user._id, speaker: ChatMessage.getSpeaker({ actor: target }), flavor: "Damage Dealt ", content: "[[" + wDamage + "-" + tough_arm + "]]" })
+                        var armorR = parseInt(_token.actor.data.data.armorRating)||0;
 
 
-                });
+                        const calc_damage = wDamage - tough_arm;
 
+                        let r = new Roll("@damage + @tough + @armor", { damage: wDamage, tough: wTough, armor: armorR }).roll();
+
+
+                        ChatMessage.create({ user: game.user._id, speaker: ChatMessage.getSpeaker({ actor: target }), content: "<h2>Damage Dealt</h2> <p>Damage - Toughness - Armor</p> [[" + wDamage + "-" + wTough + "-" + armor + "]]" });
+
+
+                    });
+
+                }
             }
+            
         })
     }
 }
