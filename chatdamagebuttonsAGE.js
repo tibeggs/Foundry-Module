@@ -33,7 +33,7 @@ class ChatDamageButtons5e extends Application {
 
                         const armor = target.data.data.armorRating;
 
-                        var wTough = parseInt(_token.actor.data.data.toughnes)|| 0;
+                        var wTough = parseInt(_token.actor.data.data.toughness)|| 0;
 
                         var tough_arm = parseInt(armor) + parseInt(wTough);
 
