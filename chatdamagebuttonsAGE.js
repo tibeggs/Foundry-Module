@@ -47,7 +47,7 @@ class ChatDamageButtons5e extends Application {
                         let r = new Roll("@damage + @tough + @armor", { damage: wDamage, tough: wTough, armor: armorR }).roll();
 
 
-                        ChatMessage.create({ user: game.user._id, speaker: ChatMessage.getSpeaker({ actor: target }), content: "<h2>Damage Dealt</h2> <p>Damage - Toughness - Armor</p> [[" + wDamage + "-" + wTough + "-" + armor + "]]" });
+                        ChatMessage.create({ user: game.user._id, speaker: ChatMessage.getSpeaker({ actor: target }), content: "<h2>Damage Dealt</h2> <p>Damage: " + wDamage + " - Toughness: " + wTough + " - Armor: " + armorR + "</p> [[" + wDamage + " - " + wTough + " - " + armor + "]]" });
 
 
                     });
